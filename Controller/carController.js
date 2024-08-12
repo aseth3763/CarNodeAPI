@@ -61,11 +61,17 @@ const postData = async (req, res) => {
       color,
       price,
       number,
-      image: image,
+      image
     });
     console.log(new_data);
 
     await new_data.save();
+
+  return res.status(200).json({
+    success: true,
+    message : "Data added",
+    data : new_data
+  })
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -79,7 +85,7 @@ const postData = async (req, res) => {
 const gettAllData = async (req, res) => {
   try {
     const totalData = await Data_of_car.find();
-    if (!totalData) {
+    if (!totalData||totalData.length ===0) {
       return res.status(400).json({
         success: false,
         message: "data not found",

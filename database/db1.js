@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-const mongoURL = "mongodb://localhost:27017/Car_database";
+require("dotenv").config()
+
+// const mongoURL = process.env.db_url
+const mongoURL = process.env.db_url_local
 
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
@@ -9,12 +12,12 @@ mongoose.connect(mongoURL, {
 const db = mongoose.connection;
 
 db.on("connected", ()=>{
-    console.log("Connected get successfully");
+    console.log("Connected successfully");
 })
 
 
 db.on("error", (error)=>{
-    console.log("Connected get successfully" , error);
+    console.log("Error : " , error);
 })
 
 db.on("disconnected", ()=>{
