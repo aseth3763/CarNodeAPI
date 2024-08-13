@@ -1,27 +1,32 @@
 const mongoose = require("mongoose");
-require("dotenv").config()
+require("dotenv").config();
 
-// const mongoURL = process.env.db_url
-const mongoURL = process.env.db_url_local
+// const MONGO_URL = process.env.db_url_local
+const MONGO_URL = process.env.DB_URL; // Using uppercase for environment variables
+console.log(MONGO_URL);
 
-mongoose.connect(mongoURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+if (!MONGO_URL) {
+  console.error(
+    "MongoDB connection string is missing. Please set the DB_URL environment variable."
+  );
+  process.exit(1); // Exit process if environment variable is not set
+}
+
+mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
-db.on("connected", ()=>{
-    console.log("Connected successfully");
-})
+// Handle connection events
+db.on("connected", () => {
+  console.log("Connected successfully to MongoDB.");
+});
 
+db.on("error", (error) => {
+  console.error("MongoDB connection error:", error);
+});
 
-db.on("error", (error)=>{
-    console.log("Error : " , error);
-})
-
-db.on("disconnected", ()=>{
-    console.log("Not disconnected");
-})
+db.on("disconnected", () => {
+  console.log("Disconnected from MongoDB.");
+});
 
 module.exports = db;
