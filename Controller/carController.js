@@ -61,17 +61,17 @@ const postData = async (req, res) => {
       color,
       price,
       number,
-      image
+      image,
     });
     console.log(new_data);
 
     await new_data.save();
 
-  return res.status(200).json({
-    success: true,
-    message : "Data added",
-    data : new_data
-  })
+    return res.status(200).json({
+      success: true,
+      message: "Data added",
+      data: new_data,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -85,7 +85,7 @@ const postData = async (req, res) => {
 const gettAllData = async (req, res) => {
   try {
     const totalData = await Data_of_car.find();
-    if (!totalData||totalData.length ===0) {
+    if (!totalData || totalData.length === 0) {
       return res.status(400).json({
         success: false,
         message: "data not found",
@@ -136,10 +136,11 @@ const updateData = async (req, res) => {
     const id = req.params.id;
     // const data = req.body;
     // console.log(data);
+    const updateFields = { name: "Swift desire" , color: "yellow" };
 
     const response = await Data_of_car.findByIdAndUpdate(
       id,
-      { color: "yellow" },
+      updateFields,
       {
         new: true,
         runValidators: true,
