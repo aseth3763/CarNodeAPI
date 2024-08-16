@@ -117,8 +117,16 @@ const getSingleData = async (req, res) => {
       });
     }
 
-    const user = await Data_of_car.findOne();
+    const user = await Data_of_car.findById(id);
+    console.log(user);
+    
     console.log("Single data get successfully");
+    if(!user){
+        return res.status(400).json({
+          success:false,
+          message : "User not found"
+        })
+    }
     res.status(200).json({
       success: true,
       message: "user data",
